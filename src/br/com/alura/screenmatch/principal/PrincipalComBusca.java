@@ -1,7 +1,10 @@
 package br.com.alura.screenmatch.principal;
 
 import br.com.alura.screenmatch.modelos.Titulo;
+import br.com.alura.screenmatch.modelos.TituloOmdb;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,9 +31,17 @@ public class PrincipalComBusca {
         String json = response.body();
         System.out.println(json);
 
+    // Deserializando o JSON para um objeto TituloOmdb
+    // Esse builder faz com que o dado que chega como "Title" seja possivel interpretado
+    // como "title", corrigindo o erro de "null"
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
 
-        Gson gson = new Gson();
-        Titulo meuTitulo = gson.fromJson(json, Titulo.class);
+        TituloOmdb meuTituloOmdb = gson.fromJson(json, TituloOmdb.class);
+        System.out.println(meuTituloOmdb);
+        Titulo meuTitulo = new Titulo(meuTituloOmdb);
+        System.out.println("Titulo ja convertido:");
         System.out.println(meuTitulo);
 
     }
